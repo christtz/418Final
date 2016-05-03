@@ -41,13 +41,13 @@ int main(int argc , char *argv[]){
 	string testName = "../tests/insert1.txt";
 	ifstream ifs;
 
-	/*	
-	while((opt = getopt(argc , argv, "t")) != -1){
+		
+	while((opt = getopt(argc , argv, "t:")) != -1){
 	  switch (opt) {
 		  case 't': testName = optarg;
 			    break;
 	  }
-	}*/
+	}
 	if(testName == ""){
 		println("no file name spec");
 		return 0;
@@ -61,7 +61,7 @@ int main(int argc , char *argv[]){
 
 	//Run Stuff
 	trace tr;
-	List testList;
+	SeqList testList;
 
 	parseFile(ifs , tr);
 	runCmdList(tr, testList);
@@ -199,6 +199,12 @@ void randTrace(trace &tr, int n, double top = 66.66f , double mid = 33.33f ){
 	tr.nFin = nFin;
 	tr.cmdlist = cmdlist;
 }
+
+void runCmdListPara(trace &tr , List &l ){
+	
+
+
+} 
 
 
 
