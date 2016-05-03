@@ -1,5 +1,4 @@
 FINISH TESTER:
-	- get it working
 	- add more stats
 		- number of each cmd
 		- variance
@@ -23,3 +22,13 @@ Coarse grained Linked List Lock:
 
 Questions:
 	- strict sequential ordering ro operations??
+
+
+
+TONIGHT: move trace to a struct 
+	 get it working
+	 add a random feature
+		-- math.random
+		-- build trace as it goes
+		-- set probability distribution
+	 create a stats function given a trace
