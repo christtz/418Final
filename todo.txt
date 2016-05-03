@@ -1,0 +1,25 @@
+FINISH TESTER:
+	- get it working
+	- add more stats
+		- number of each cmd
+		- variance
+		- exact time called?
+	- add way to get number of each thing easily
+	- random generation
+		- option for random in optarg
+	- Work queue
+		- atomic increment
+		- correct granularity
+		- takeing off the list
+
+GENERAL:
+	inheretince for different lists!!!
+	MAKEFILE
+
+Coarse grained Linked List Lock:
+	- lock the head lol
+
+
+
+Questions:
+	- strict sequential ordering ro operations??
