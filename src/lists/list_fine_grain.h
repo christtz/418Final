@@ -10,6 +10,8 @@ class FineList : public List{
 	void insert(int value);
 	void remove(int value);
 	bool find(int value);
+
+
 	//string printlist();
 	FineList() : List(){ };
 
@@ -21,13 +23,11 @@ class FineList : public List{
 void FineList::insert(int value){
 	listnode *ptr = new listnode(value);
 	listnode *prev, *curr;
-	mylock.lock();
+	head->lock.lock();
 	prev = head;
 	curr = head->next;
 	//Special case for head end
 
-	prev->lock.lock();
-	mylock.unlock();
 	if (curr != tail) curr->lock.lock();
 
 	while (curr != tail) {
@@ -40,6 +40,7 @@ void FineList::insert(int value){
 	}
 	ptr->next = curr;
 	prev->next = ptr;
+	cout << "inserting" << value << endl;
 	prev->lock.unlock();
 	if (curr != tail) curr->lock.unlock();
 }
@@ -47,12 +48,10 @@ void FineList::insert(int value){
 //First occurrence
 void FineList::remove(int value){
 	listnode *prev, *curr;
-	mylock.lock();
+	head->lock.lock();
 	prev = head;
-	curr = head->next;
-	prev->lock.lock();
+	curr = head->next;;
 	if (curr != tail) curr->lock.lock();
-	mylock.unlock();
 	while(curr != tail && curr->value <= value) {
 		if(curr->value == value){
 		  prev->next = curr->next;
@@ -73,12 +72,10 @@ void FineList::remove(int value){
 bool FineList::find(int value){
 
 	listnode *prev, *curr;
-	mylock.lock();
+	head->lock.lock();
 	prev = head;
 	curr = head->next;
-	prev->lock.lock();
 	if (curr != tail) curr->lock.lock();
-	mylock.unlock();
 	while(curr != tail && curr->value <= value) {
 		if(curr->value == value){
 		  prev->lock.unlock();

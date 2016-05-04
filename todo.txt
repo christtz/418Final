@@ -3,25 +3,21 @@ FINISH TESTER:
 		- number of each cmd
 		- variance
 		- exact time called?
+		- way to get out to files for easy graphing
 	- optargs
 		- work queue running
 	- random generation
 		- option for random in optarg
 		- create a counter for unique values??
-	- Work queue
-		- OpenMP
-			- batch in terms of a larger dynamic
-			- dynamic scheduling with batch sizes
 
 GENERAL:
 	MAKEFILE
 
 TODO:
-work queue with openmp
-write small traces
-get coarse working
 
 python bigger traces             Fine grained
 equality checks
-
+checks for fine grained
+performance checks
+STATISTICS 
 

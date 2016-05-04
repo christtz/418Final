@@ -25,10 +25,9 @@ class List{
 	string printlist();
 	List();
 	~List(){};
-	
-	protected:
 	listnode *head;
 	listnode *tail;
+	//changed to public yolo
 };
 
 List::List(void){
@@ -46,5 +45,19 @@ string List::printlist(){
 	}
 	return s.str();
 }
+/*
+bool checkEq(const List &a, const List &b){
+	
+	listnode aptr = a.head->next;
+	listnode bptr = b.head->next;
+
+	while(aptr != a.tail && bptr != b.tail){
+		if(aptr.value != bptr.value)
+			return false;
+		aptr = aptr->next;
+		bptr = bptr->next;
+	}
+	return (aptr == a.tail) && (bptr == b.tail);
+}*/
 
 #endif 
