@@ -63,7 +63,9 @@ int main(int argc , char *argv[]){
 		return 0;
 	}
 
+	
 	//Run Stuff
+	/*
 	trace tr;
 	SeqList slist;
 	FineList flist;
@@ -79,7 +81,7 @@ int main(int argc , char *argv[]){
 	println(slist.printlist());	
 	println(clist.printlist());
 	println(flist.printlist());
-
+*/
 	println("DONE WITH TESTING");
 	return 0;
 }

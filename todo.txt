@@ -12,10 +12,14 @@ FINISH TESTER:
 
 GENERAL:
 	MAKEFILE
+	Fix Memory errors
+		-> destructors for entire list
+		-> destructors for listnode
+		-> delete the listnode in remove
 
 TODO:
 
-python bigger traces             Fine grained
+python bigger traces           
 equality checks
 checks for fine grained
 performance checks
