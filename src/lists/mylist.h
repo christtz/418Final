@@ -1,12 +1,15 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
+#include <mutex>
+#include <thread>
 using namespace std;
 
 //Simple list node with ints
 //ASSUMING ALL OUR LISTS WILL BE IN THIS FORMAT
 //ILL TAKE A GANDER WE CAN VERRIDE LATER
+#ifndef __MYLIST__
+#define __MYLIST__
 typedef struct listnode {
 	listnode *next;
 	int value;
@@ -43,3 +46,5 @@ string List::printlist(){
 	}
 	return s.str();
 }
+
+#endif 

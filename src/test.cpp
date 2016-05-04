@@ -1,5 +1,7 @@
 #include <iostream>
 #include "lists/sorted_list_seq.h"
+#include "lists/list_coarse_grain.h"
+#include "lists/list_fine_grain.h"
 #include <vector>
 #include <fstream>
 #include <string.h>
@@ -34,6 +36,7 @@ typedef struct trace{
 void println(string str);
 void parseFile(ifstream &ifs, trace &tr);
 void runCmdList(trace &cmdlist , List &l);
+void runCmdListPara(trace &tr , List &l );
 
 //TODO get oparg working
 int main(int argc , char *argv[]){
@@ -62,11 +65,20 @@ int main(int argc , char *argv[]){
 
 	//Run Stuff
 	trace tr;
-	SeqList testList;
-
+	SeqList slist;
+	FineList flist;
+	CoarseList clist;
+	//get Trace file
 	parseFile(ifs , tr);
-	runCmdList(tr, testList);
-	println(testList.printlist());	
+	// SEQ COARS FINE
+	runCmdList(tr, slist);
+	runCmdListPara(tr, clist);
+	runCmdListPara(tr,flist);
+	
+	println("Seq , Coarse");
+	println(slist.printlist());	
+	println(clist.printlist());
+	println(flist.printlist());
 
 	println("DONE WITH TESTING");
 	return 0;
@@ -127,7 +139,7 @@ void println(string str){
 //TODO Find nice way to 
 void runCmdList(trace &tr , List &l){
 	//Maybe make a log here???
-	println("Running Sequential");
+	println("---Running Sequential---");
 	double start;
 	double end;
 
@@ -168,12 +180,13 @@ void runCmdList(trace &tr , List &l){
 	println("Average time taken");
 	cout << totaltime / ((double) tr.cmdlist.size()) << endl;
 	//STATS ->> move to another function.
+ 	println("--------------ENDING SEQ--------------------");		
 }
 
 
 //Run a parallel version 
 void runCmdListPara(trace &tr , List &l ){
-	println("Running parallel");
+ 	println("--------------Starting PARALLEL--------------------");		
 	int i=0;
 	int size = tr.cmdlist.size();
 	double start = 0;
@@ -224,7 +237,7 @@ void runCmdListPara(trace &tr , List &l ){
 	println("Average time taken");
 	cout << totaltime / ((double) tr.cmdlist.size()) << endl;
 	//STATS ->> move to another function.
-		
+ 	println("--------------DONE WITH PARALLEL--------------------");		
 }
 
 
