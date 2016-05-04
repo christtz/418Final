@@ -3,32 +3,25 @@ FINISH TESTER:
 		- number of each cmd
 		- variance
 		- exact time called?
-	- add way to get number of each thing easily
+	- optargs
+		- work queue running
 	- random generation
 		- option for random in optarg
+		- create a counter for unique values??
 	- Work queue
-		- atomic increment
-		- correct granularity
-		- takeing off the list
+		- OpenMP
+			- batch in terms of a larger dynamic
+			- dynamic scheduling with batch sizes
 
 GENERAL:
-	inheretince for different lists!!!
 	MAKEFILE
 
-Coarse grained Linked List Lock:
-	- lock the head lol
+TODO:
+work queue with openmp
+write small traces
+get coarse working
+
+python bigger traces             Fine grained
+equality checks
 
 
-
-Questions:
-	- strict sequential ordering ro operations??
-
-
-
-TONIGHT: move trace to a struct 
-	 get it working
-	 add a random feature
-		-- math.random
-		-- build trace as it goes
-		-- set probability distribution
-	 create a stats function given a trace
