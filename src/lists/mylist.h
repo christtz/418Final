@@ -10,6 +10,7 @@ using namespace std;
 typedef struct listnode {
 	listnode *next;
 	int value;
+	mutex lock; 
 	listnode (int v = 0) : value(v) {};
 }listnode;
 

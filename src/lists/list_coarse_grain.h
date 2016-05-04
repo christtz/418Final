@@ -13,10 +13,10 @@ class CoarseList : public List{
 	void remove(int value);
 	bool find(int value);
 	//string printlist();
+	CoarseList() : List(){ };
 
 	private:
-	std::mutex mylock;
-	CoarseList() : List(){ };
+	mutex mylock;
 };
 
 //Adds to front of the list
@@ -39,7 +39,7 @@ void CoarseList::insert(int value){
 	mylock.unlock();
 }
 
-//First occurence
+//First occurrence
 void CoarseList::remove(int value){
 	mylock.lock();
 	listnode *curr = head->next;

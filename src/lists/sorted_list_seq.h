@@ -32,7 +32,7 @@ void SeqList::insert(int value){
 	}
 }
 
-//First occurence
+//First occurrence
 void SeqList::remove(int value){
 	listnode *curr = head->next;
 	listnode *prev = head;
