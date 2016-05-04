@@ -30,17 +30,18 @@ void FineList::insert(int value){
 	mylock.unlock();
 	if (curr != tail) curr->lock.lock();
 
-	while (curr != tail && curr->value < value) {
+	while (curr != tail) {
+		if (curr->value > value) break;
 		listnode *old_prev = prev;
 		prev = curr;
 		curr = curr->next;
-		if (curr != tail) curr->lock.lock();
 		old_prev->lock.unlock();
+		if (curr != tail) curr->lock.lock();
 	}
 	ptr->next = curr;
 	prev->next = ptr;
 	prev->lock.unlock();
-	curr->lock.unlock();
+	if (curr != tail) curr->lock.unlock();
 }
 
 //First occurrence

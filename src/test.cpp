@@ -196,7 +196,7 @@ void runCmdListPara(trace &tr , List &l ){
 	//TODO SCHEDULE CORRECTLY
 	  int num = tr.batchsize > size - i ? size - i : tr.batchsize; 
 	  #pragma omp parallel for schedule(static , 1)
-	  for(int j = i; j < num; j++){
+	  for(int j = i; j < i + num; j++){
 	    cmd & c  = tr.cmdlist[j];
 	    switch( c.op){
 		  case REM:

@@ -21,7 +21,7 @@ class List{
 	public:
 	virtual void insert(int value){};
 	virtual void remove(int value){};
-	virtual bool find(int value){};
+	virtual bool find(int value){return false;};
 	string printlist();
 	List();
 	~List(){};
