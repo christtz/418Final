@@ -16,7 +16,7 @@ class FreeList : public List{
 	FreeList() : List(){ };
 
 	private:
-	listnode search(int value, listnode **node);
+	listnode *FreeList::search(int value, listnode **node);
 };
 
 //Adds to front of the list
@@ -56,8 +56,55 @@ bool FreeList::find(int value){
 	else return true;
 }
 
-listnode FreeList::search(int value, listnode **node) {
+listnode *FreeList::search(int value, listnode **left_node) {
+	listnode *left_node_next, *right_node;
+	SEARCH_AGAIN:do {
+		listnode *t = head;
+		listnode *t_next = head->next;
 
+		/* Find left and right node */
+		do {
+			if (!is_marked_reference(t_next)) {
+				(*left_node) = t;
+				left_node_next = t_next;
+			}
+			t = get_unmarked_reference(t_next);
+			if (t == tail) break;
+			t_next = t->next;
+		} while (is_marked_reference(t_next) || t->value < value);
+		right_node = t;
+
+		/* Check nodes are adjacent */
+		if (left_node_next == right_node) {
+			if ((right_node != tail) && is_marked_reference(right_node->next)) {
+				goto SEARCH_AGAIN;
+			}
+			else {
+				return right_node;
+			}
+		}
+
+		/* Remove one or more marked nodes*/
+		if (__sync_bool_compare_and_swap(&(left_node->next), left_node_next, right_node)) {
+			if ((right_node != tail) && is_marked_reference(right_node->next)) {
+				goto SEARCH_AGAIN;
+			}
+			else {
+				return right_node;
+			}
+		}
+	} while (true);
 }
 
+listnode *get_marked_reference(listnode *node) {
+	return node | 1;
+}
+
+listnode *get_unmarked_reference(listnode *node) {
+	return node & ((~0)-1);
+}
+
+bool is_marked_reference(listnode *node) {
+	return (node & 1 == 1);
+}
 
