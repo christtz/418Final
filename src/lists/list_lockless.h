@@ -14,38 +14,50 @@ class FreeList : public List{
 	bool find(int value);
 	//string printlist();
 	FreeList() : List(){ };
+
+	private:
+	listnode search(int value, listnode **node);
 };
 
 //Adds to front of the list
 void FreeList::insert(int value){
-	listnode *ptr = new listnode(value);
-	ptr->next = head->next;
-	head->next = ptr;
+	listnode *new_node = new listnode(value);
+	listnode *right_node, *left_node;
+
+	while (true) {
+		right_node = search(value, &left_node);
+		if ((right_node != tail) && (right_node->value == value)) return false;
+		new_node->next = right_node;
+		if (__sync_bool_compare_and_swap(&(left_node->next), right_node, new_node)) return true;
+	}
 }
 
 //First occurence
 void FreeList::remove(int value){
-	listnode *curr = head->next;
-	listnode *prev = head;
-	while(curr != tail){
-		if(curr->value == value){
-		  prev->next = curr->next;
-		  delete curr;// <----- this work?
-		  return;
+	listnode *right_node, *right_node_next, *left_node;
+	while (true) {
+		right_node = search(value, &left_node);
+		if ((right_node == tail) || (right_node->value != value)) return false;
+		right_node_next = right_node->next;
+		if (!is_marked_reference(right_node_next)) {
+			if (__sync_bool_compare_and_swap(&(right_node_next), right_node_next, get_marked_reference(right_node_next))) break;
 		}
-		prev = curr;
-		curr = curr->next;
 	}
+	if (!__sync_bool_compare_and_swap(&(left_node->next), right_node, right_node_next)) {
+		right_node = search(right_node->value, &left_node);
+	}
+	return true;
 }
 
 bool FreeList::find(int value){
-	listnode *ptr = head->next;
-	while(ptr != tail){
-		if(ptr->value == value)
-		  return true;
-		ptr = ptr->next;
-	}
-	return false;
+	listnode *right_node, *left_node;
+	right_node = search(value, &left_node);
+	if ((right_node == tail) || (right_node->value != value)) return false;
+	else return true;
+}
+
+listnode FreeList::search(int value, listnode **node) {
+
 }
 
 
