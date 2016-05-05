@@ -5,18 +5,18 @@ FINISH TESTER:
 		- exact time called?
 		- way to get out to files for easy graphing
 	- optargs
-		- work queue running
-	- random generation
-		- option for random in optarg
-		- create a counter for unique values??
+		- option for printing
+		- checking equality
+		- which file to use
+		- number of traces to run
 
 GENERAL:
 	MAKEFILE
 TODO:
 
 Programming
-list equality checks
 change mutexes to spinlocks
+optargs / diff shit
 
 Checks:
 checks for fine grained

@@ -35,7 +35,6 @@ void FineList::insert(int value){
 	}
 	ptr->next = curr;
 	prev->next = ptr;
-	cout << "inserting" << value << endl;
 	pthread_spin_unlock(&(prev->lock));
 	if (curr != tail) pthread_spin_unlock(&(curr->lock));
 }

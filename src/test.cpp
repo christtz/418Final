@@ -42,7 +42,7 @@ void runCmdListPara(trace &tr , List &l );
 int main(int argc , char *argv[]){
 	println("WELCOME TO THE TESTING CLUB");
 	int opt;
-	string testName = "../tests/insert1.txt";
+	string testName = "../tests/superbig1.txt";
 	bool print = true;
 	bool ceq = false;
 	ifstream ifs;
@@ -82,10 +82,11 @@ int main(int argc , char *argv[]){
 	runCmdListPara(tr,flist);
 	
 	//Print Lists
+	/*
 	println("Seq, Coarse, Fine");
 	println(slist.printlist());	
 	println(clist.printlist());
-	println(flist.printlist());
+	println(flist.printlist());*/
 
 	if(!checkEq(slist , clist))
 		println("Coarse List is not equal to check");
