@@ -17,6 +17,7 @@ typedef struct listnode {
 	int value;
 	pthread_spinlock_t lock;
 	int pshared;
+
 	listnode (int v = 0) : value(v) {
 		pthread_spin_init(&lock, pshared);
 	};
