@@ -3,6 +3,7 @@
 #include <string>
 #include <mutex>
 #include <thread>
+#include <pthread.h>
 
 using namespace std;
 
@@ -14,8 +15,11 @@ using namespace std;
 typedef struct listnode {
 	listnode *next;
 	int value;
-	mutex lock; 
-	listnode (int v = 0) : value(v) {};
+	pthread_spinlock_t lock;
+	int pshared;
+	listnode (int v = 0) : value(v) {
+		pthread_spin_init(&lock, pshared);
+	};
 }listnode;
 
 class List{
