@@ -10,13 +10,7 @@ class FineList : public List{
 	void insert(int value);
 	void remove(int value);
 	bool find(int value);
-
-
-	//string printlist();
 	FineList() : List(){ };
-
-	private:
-	mutex mylock;
 };
 
 //Adds to front of the list
@@ -57,7 +51,7 @@ void FineList::remove(int value){
 		  prev->next = curr->next;
 		  prev->lock.unlock();
 		  curr->lock.unlock();
-		  delete curr; // <----- this work?
+		  delete( curr); // <----- this work?
 		  return;
 		}
 		listnode *old_prev = prev;

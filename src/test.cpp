@@ -43,6 +43,8 @@ int main(int argc , char *argv[]){
 	println("WELCOME TO THE TESTING CLUB");
 	int opt;
 	string testName = "../tests/insert1.txt";
+	bool print = true;
+	bool ceq = false;
 	ifstream ifs;
 
 		
@@ -65,7 +67,7 @@ int main(int argc , char *argv[]){
 
 	
 	//Run Stuff
-	/*
+	
 	trace tr;
 	SeqList slist;
 	FineList flist;
@@ -73,15 +75,23 @@ int main(int argc , char *argv[]){
 	//get Trace file
 	parseFile(ifs , tr);
 	// SEQ COARS FINE
+	
+	//Run the 
 	runCmdList(tr, slist);
 	runCmdListPara(tr, clist);
 	runCmdListPara(tr,flist);
 	
-	println("Seq , Coarse");
+	//Print Lists
+	println("Seq, Coarse, Fine");
 	println(slist.printlist());	
 	println(clist.printlist());
 	println(flist.printlist());
-*/
+
+	if(!checkEq(slist , clist))
+		println("Coarse List is not equal to check");
+	if(!checkEq(slist , flist))
+		println("Fine List is not equal to check");
+
 	println("DONE WITH TESTING");
 	return 0;
 }
@@ -199,7 +209,7 @@ void runCmdListPara(trace &tr , List &l ){
 	  int num = tr.batchsize > size - i ? size - i : tr.batchsize; 
 	  #pragma omp parallel for schedule(static , 1)
 	  for(int j = i; j < i + num; j++){
-	    cmd & c  = tr.cmdlist[j];
+	    cmd & c  = tr.cmdlist[j];//this is def a pointer in a block so we good
 	    switch( c.op){
 		  case REM:
 			start = CycleTimer::currentSeconds();

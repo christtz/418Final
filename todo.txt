@@ -12,16 +12,13 @@ FINISH TESTER:
 
 GENERAL:
 	MAKEFILE
-	Fix Memory errors
-		-> destructors for entire list
-		-> destructors for listnode
-		-> delete the listnode in remove
-
 TODO:
 
-python bigger traces           
-equality checks
+Programming
+list equality checks
+change mutexes to spinlocks
+
+Checks:
 checks for fine grained
 performance checks
-STATISTICS 
 

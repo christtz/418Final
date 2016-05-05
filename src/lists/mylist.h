@@ -3,6 +3,7 @@
 #include <string>
 #include <mutex>
 #include <thread>
+
 using namespace std;
 
 //Simple list node with ints
@@ -24,7 +25,7 @@ class List{
 	virtual bool find(int value){return false;};
 	string printlist();
 	List();
-	~List(){};
+	~List();
 	listnode *head;
 	listnode *tail;
 	//changed to public yolo
@@ -36,6 +37,18 @@ List::List(void){
 	head->next = tail;
 }
 
+List::~List(){
+
+	listnode *ptr = head->next;
+	while(ptr != tail){
+	  listnode *temp = ptr;
+	  ptr = ptr->next;
+	  delete(temp);
+	}
+	delete(head);
+	delete(tail);
+}
+
 string List::printlist(){
 	listnode *ptr = head->next;
 	stringstream s;
@@ -45,19 +58,19 @@ string List::printlist(){
 	}
 	return s.str();
 }
-/*
+
 bool checkEq(const List &a, const List &b){
 	
-	listnode aptr = a.head->next;
-	listnode bptr = b.head->next;
+	listnode *aptr = a.head->next;
+	listnode *bptr = b.head->next;
 
 	while(aptr != a.tail && bptr != b.tail){
-		if(aptr.value != bptr.value)
+		if(aptr->value != bptr->value)
 			return false;
 		aptr = aptr->next;
 		bptr = bptr->next;
 	}
-	return (aptr == a.tail) && (bptr == b.tail);
-}*/
+	return ((aptr == a.tail) && (bptr == b.tail));
+}
 
 #endif 

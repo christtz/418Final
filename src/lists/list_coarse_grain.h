@@ -47,7 +47,7 @@ void CoarseList::remove(int value){
 	while(curr != tail && curr->value <= value) {
 		if(curr->value == value){
 		  prev->next = curr->next;
-		  delete curr; // <----- this work?
+		  delete(curr); // <----- this work?
 		  mylock.unlock();
 		  return;
 		}
