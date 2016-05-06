@@ -37,22 +37,29 @@ typedef struct trace{
 void println(string str);
 void parseFile(ifstream &ifs, trace &tr);
 void runCmdList(trace &cmdlist , List &l);
-void runCmdListPara(trace &tr , List &l );
+void runCmdListPara(trace &tr , List &l, int numthreads);
 
 //TODO get oparg working
 int main(int argc , char *argv[]){
-	println("WELCOME TO THE TESTING CLUB");
 	int opt;
-	string testName = "../tests/ll.txt";
-	bool print = true;
+	string testName = "../tests/insconsec1000.txt";
+	string outputFile = "";
+	//bool print = true;
 	bool ceq = false;
+	int numthreads = omp_get_max_threads(); // 0 means max on system
 	ifstream ifs;
 
-		
-	while((opt = getopt(argc , argv, "t:")) != -1){
+
+	//options to run
+	while((opt = getopt(argc , argv, "cotf:")) != -1){
 	  switch (opt) {
-		  case 't': testName = optarg;
+		  case 'f': testName = optarg;
 			    break;
+		  case 't': numthreads = atoi(optarg);
+			    break;
+		  case 'o': outputFile = optarg;
+			    break;
+		  case 'c': ceq = true;
 	  }
 	}
 	if(testName == ""){
@@ -65,43 +72,47 @@ int main(int argc , char *argv[]){
 		println("file failed to open");
 		return 0;
 	}
-
+	println("Testname: "+testName);
+	cout << "Numthreads: " << numthreads << endl;
 	
 	//Run Stuff
 	
 	trace tr;
-	SeqList slist;
-	FineList flist;
-	CoarseList clist;
-	FreeList lflist;
+	SeqList *slist = new SeqList();
+	FineList *flist = new FineList();
+	CoarseList *clist = new CoarseList();
+	FreeList *lflist = new FreeList();
 
 	//get Trace file
 	parseFile(ifs , tr);
 	// SEQ COARS FINE
 	
 	//Run the
-	 
-	runCmdList(tr, slist);
-	/*println("Coarse");
-	runCmdListPara(tr, clist);
+	println("Seq");
+	runCmdList(tr, *slist);
+	delete(slist);
+	println("Coarse");
+	runCmdListPara(tr, *clist, numthreads);
+	delete(clist);
 	println("Fine");
-	runCmdListPara(tr,flist);*/
+	runCmdListPara(tr,*flist, numthreads);
+	delete(flist);
 	println("Lock-Free");
-	runCmdList(tr,lflist);
-	
+	//runCmdListPara(tr,*lflist, numthreads);
+   	//delete(lflist);
 	//Print Lists
 	/*
 	println("Seq, Coarse, Fine");
 	println(slist.printlist());	
 	println(clist.printlist());
 	println(flist.printlist());*/
-
-	if(!checkEq(slist , clist))
+	/*
+	if(ceq){
+	if(!checkEq(*slist , *clist))
 		println("Coarse List is not equal to check");
-	if(!checkEq(slist , flist))
+	if(!checkEq(*slist , *flist))
 		println("Fine List is not equal to check");
-
-	println("DONE WITH TESTING");
+	}*/
 	return 0;
 }
 
@@ -156,11 +167,12 @@ void println(string str){
   cout << str << endl;
 }
 
+
+
 //What about multiple threads yo?
 //TODO Find nice way to 
 void runCmdList(trace &tr , List &l){
 	//Maybe make a log here???
-	println("---Running Sequential---");
 	double start;
 	double end;
 
@@ -187,8 +199,7 @@ void runCmdList(trace &tr , List &l){
 			break;
 	  }
 	}
-	println("Done with commands");
-	println("Doing calculations");
+
 	double totaltime = 0;;
 	for(vector<cmd>::iterator it = tr.cmdlist.begin(); it != tr.cmdlist.end(); it++){
 		cmd & c = *it; 
@@ -198,16 +209,15 @@ void runCmdList(trace &tr , List &l){
 	//STATS ->> move to another function.
 	println("Total time taken");
 	cout << totaltime << endl;
-	println("Average time taken");
+	/*println("Average time taken");
 	cout << totaltime / ((double) tr.cmdlist.size()) << endl;
 	//STATS ->> move to another function.
- 	println("--------------ENDING SEQ--------------------");		
+ 	println("--------------ENDING SEQ--------------------");*/
 }
 
 
 //Run a parallel version 
-void runCmdListPara(trace &tr , List &l ){
- 	println("--------------Starting PARALLEL--------------------");		
+void runCmdListPara(trace &tr , List &l, int numthreads ){
 	int i=0;
 	int size = tr.cmdlist.size();
 	double start = 0;
@@ -217,7 +227,8 @@ void runCmdListPara(trace &tr , List &l ){
 	//TODO SCHEDULE CORRECTLY
 	  int num = tr.batchsize > size - i ? size - i : tr.batchsize; 
 	  // #pragma omp parallel for schedule(static , 1)
-	  #pragma omp parallel for num_threads(3)
+	  omp_set_num_threads(numthreads);
+	  #pragma omp parallel for schedule(static , 1)
 	  for(int j = i; j < i + num; j++){
 	    cmd & c  = tr.cmdlist[j];//this is def a pointer in a block so we good
 	    switch( c.op){
@@ -244,8 +255,6 @@ void runCmdListPara(trace &tr , List &l ){
 	  }
 	}
 	
-	println("Done with commands");
-	println("Doing calculations");
 	//TODO parallelize in both places and move to another
 	double totaltime = 0;;
 	for(vector<cmd>::iterator it = tr.cmdlist.begin(); it != tr.cmdlist.end(); it++){
@@ -256,10 +265,10 @@ void runCmdListPara(trace &tr , List &l ){
 	//STATS ->> move to another function.
 	println("Total time taken");
 	cout << totaltime << endl;
-	println("Average time taken");
+	/*println("Average time taken");
 	cout << totaltime / ((double) tr.cmdlist.size()) << endl;
 	//STATS ->> move to another function.
- 	println("--------------DONE WITH PARALLEL--------------------");		
+ 	println("--------------DONE WITH PARALLEL--------------------");*/
 }
 
 
