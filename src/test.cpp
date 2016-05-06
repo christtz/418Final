@@ -2,6 +2,7 @@
 #include "lists/sorted_list_seq.h"
 #include "lists/list_coarse_grain.h"
 #include "lists/list_fine_grain.h"
+#include "lists/list_lockless.h"
 #include <vector>
 #include <fstream>
 #include <string.h>
@@ -42,7 +43,7 @@ void runCmdListPara(trace &tr , List &l );
 int main(int argc , char *argv[]){
 	println("WELCOME TO THE TESTING CLUB");
 	int opt;
-	string testName = "../tests/superbig1.txt";
+	string testName = "../tests/ll.txt";
 	bool print = true;
 	bool ceq = false;
 	ifstream ifs;
@@ -72,14 +73,21 @@ int main(int argc , char *argv[]){
 	SeqList slist;
 	FineList flist;
 	CoarseList clist;
+	FreeList lflist;
+
 	//get Trace file
 	parseFile(ifs , tr);
 	// SEQ COARS FINE
 	
-	//Run the 
+	//Run the
+	 
 	runCmdList(tr, slist);
+	/*println("Coarse");
 	runCmdListPara(tr, clist);
-	runCmdListPara(tr,flist);
+	println("Fine");
+	runCmdListPara(tr,flist);*/
+	println("Lock-Free");
+	runCmdList(tr,lflist);
 	
 	//Print Lists
 	/*
@@ -208,7 +216,8 @@ void runCmdListPara(trace &tr , List &l ){
 	for(int i=0; i < size; i+= tr.batchsize){
 	//TODO SCHEDULE CORRECTLY
 	  int num = tr.batchsize > size - i ? size - i : tr.batchsize; 
-	  #pragma omp parallel for schedule(static , 1)
+	  // #pragma omp parallel for schedule(static , 1)
+	  #pragma omp parallel for num_threads(3)
 	  for(int j = i; j < i + num; j++){
 	    cmd & c  = tr.cmdlist[j];//this is def a pointer in a block so we good
 	    switch( c.op){
