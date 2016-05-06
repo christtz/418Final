@@ -23,11 +23,11 @@ def main():
 		consecScript(batchsize, cmdsize)
 	elif (args[1] == "rand"):
 		randScript(batchsize, cmdsize, maxnum)
-    elif (args[1] == "insrand"):
-    	insRandScript(cmdsize, maxnum)
-    elif (args[1] == "insconsec"):
-    	insConsecScript(cmdsize)
-    else:
+	elif (args[1] == "insrand"):
+		insRandScript(cmdsize, maxnum)
+	elif (args[1] == "insconsec"):
+		insConsecScript(cmdsize)
+	else:
 		pass
 
 def insConsecScript(cmdsize):
@@ -58,7 +58,7 @@ def insRandScript(cmdsize, maxnum):
 		file.write(str(0) + "\n")
 		for x in range(0, cmdsize):
 			val = randint(0, maxnum)
-		    file.write("ins " + str(val) + "\n")
+			file.write("ins " + str(val) + "\n")
 		file.close()
 		print('Closed file!')
 
