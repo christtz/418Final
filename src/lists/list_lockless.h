@@ -23,6 +23,7 @@ class FreeList : public List{
 	bool find(int value);
 	//string printlist();
 	FreeList() : List(){ };
+	~FreeList() {};
 
 	private:
 	listnode * search(int value, listnode*& node);
@@ -30,6 +31,7 @@ class FreeList : public List{
 
 //Adds to front of the list
 void FreeList::insert(int value){
+	cout << "ins " << value << endl;
 	listnode *new_node = new listnode(value);
 	listnode *right_node, *left_node;
 
@@ -44,15 +46,25 @@ void FreeList::insert(int value){
 
 //First occurence
 void FreeList::remove(int value){
-	listnode *right_node, *right_node_next, *left_node;
+	cout << "rem " << value << endl;
+	/*listnode *p = head;
+	while (p != tail) {
+		cout << "p: " << p << " with value: " << p->value << endl;
+		p = p->next;
+	}
+	cout << "is p = tail?: " << (p == tail) << endl;*/
+
+	listnode *right_node = NULL, *right_node_next = NULL, *left_node = NULL;
 	while (true) {
 		right_node = search(value, left_node);
+		cout << "right_node is: " << right_node << " with value " << right_node->value << endl;
+		cout << "left_node is: " << left_node << " with value " << left_node->value << endl;
 		if ((right_node == tail) || (right_node->value != value)){ 
 		return;
 		}// false;
 		right_node_next = right_node->next;
 		if (!is_marked_reference(right_node_next)) {
-			if (__sync_bool_compare_and_swap(&(right_node_next), right_node_next, get_marked_reference(right_node_next))) break;
+			if (__sync_bool_compare_and_swap(&(right_node->next), right_node_next, get_marked_reference(right_node_next))) break;
 		}
 	}
 	if (!__sync_bool_compare_and_swap(&(left_node->next), right_node, right_node_next)) {
@@ -73,7 +85,6 @@ listnode * FreeList::search(int value, listnode*& left_node) {
 	SEARCH_AGAIN:do {
 		listnode *t = head;
 		listnode *t_next = head->next;
-
 		/* Find left and right node */
 		do {
 			if (!is_marked_reference(t_next)) {
@@ -84,7 +95,6 @@ listnode * FreeList::search(int value, listnode*& left_node) {
 
 			if (t == tail) break;
 			t_next = t->next;
-
 
 		} while (is_marked_reference(t_next) || t->value < value);
 		right_node = t;
@@ -100,10 +110,26 @@ listnode * FreeList::search(int value, listnode*& left_node) {
 		}
 		//&((*left_node)->next);	
 		/* Remove one or more marked nodes*/
-		listnode *a = left_node_next;
+		/*listnode *a = left_node_next;
 		listnode *c = right_node;
 		//listnode **blah = &((*left_node)->next);
+		cout << "hello im here!" << endl;
+		cout.flush();*/
+		if(left_node == NULL){
+			cout << "shit_ho" << endl;
+		}
+	       	if (*(&(left_node->next)) == left_node_next) {
+			*(&(left_node->next)) = right_node;
+			cout << "true" << endl;
+		}
+		else {
+			cout << "false" << endl;
+		}
+		__sync_bool_compare_and_swap(&((left_node)->next), left_node_next, right_node); // YELLOW
+			
 		if (__sync_bool_compare_and_swap(&((left_node)->next), left_node_next, right_node)) { // RIGHT HERE
+			cout << "hiiiii" << endl;
+			cout.flush();
 			if ((right_node != tail) && is_marked_reference(right_node->next)) {
 				goto SEARCH_AGAIN;
 			}

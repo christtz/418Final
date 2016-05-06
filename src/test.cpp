@@ -42,7 +42,7 @@ void runCmdListPara(trace &tr , List &l, int numthreads);
 //TODO get oparg working
 int main(int argc , char *argv[]){
 	int opt;
-	string testName = "../tests/insconsec1000.txt";
+	string testName = "../tests/ll.txt";
 	string outputFile = "";
 	//bool print = true;
 	bool ceq = false;
@@ -88,7 +88,7 @@ int main(int argc , char *argv[]){
 	// SEQ COARS FINE
 	
 	//Run the
-	println("Seq");
+	/* println("Seq");
 	runCmdList(tr, *slist);
 	delete(slist);
 	println("Coarse");
@@ -96,10 +96,10 @@ int main(int argc , char *argv[]){
 	delete(clist);
 	println("Fine");
 	runCmdListPara(tr,*flist, numthreads);
-	delete(flist);
+	delete(flist); */
 	println("Lock-Free");
-	//runCmdListPara(tr,*lflist, numthreads);
-   	//delete(lflist);
+	runCmdList(tr,*lflist);
+   	delete(lflist);
 	//Print Lists
 	/*
 	println("Seq, Coarse, Fine");

@@ -1,0 +1,5 @@
+0
+ins 1
+ins 2
+rem 1
+rem 2
