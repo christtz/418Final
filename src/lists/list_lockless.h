@@ -31,7 +31,6 @@ class FreeList : public List{
 
 //Adds to front of the list
 void FreeList::insert(int value){
-	cout << "ins " << value << endl;
 	listnode *new_node = new listnode(value);
 	listnode *right_node, *left_node;
 
@@ -46,19 +45,9 @@ void FreeList::insert(int value){
 
 //First occurence
 void FreeList::remove(int value){
-	cout << "rem " << value << endl;
-	/*listnode *p = head;
-	while (p != tail) {
-		cout << "p: " << p << " with value: " << p->value << endl;
-		p = p->next;
-	}
-	cout << "is p = tail?: " << (p == tail) << endl;*/
-
 	listnode *right_node = NULL, *right_node_next = NULL, *left_node = NULL;
 	while (true) {
 		right_node = search(value, left_node);
-		cout << "right_node is: " << right_node << " with value " << right_node->value << endl;
-		cout << "left_node is: " << left_node << " with value " << left_node->value << endl;
 		if ((right_node == tail) || (right_node->value != value)){ 
 		return;
 		}// false;
@@ -108,28 +97,7 @@ listnode * FreeList::search(int value, listnode*& left_node) {
 				return right_node;
 			}
 		}
-		//&((*left_node)->next);	
-		/* Remove one or more marked nodes*/
-		/*listnode *a = left_node_next;
-		listnode *c = right_node;
-		//listnode **blah = &((*left_node)->next);
-		cout << "hello im here!" << endl;
-		cout.flush();*/
-		if(left_node == NULL){
-			cout << "shit_ho" << endl;
-		}
-	       	if (*(&(left_node->next)) == left_node_next) {
-			*(&(left_node->next)) = right_node;
-			cout << "true" << endl;
-		}
-		else {
-			cout << "false" << endl;
-		}
-		__sync_bool_compare_and_swap(&((left_node)->next), left_node_next, right_node); // YELLOW
-			
 		if (__sync_bool_compare_and_swap(&((left_node)->next), left_node_next, right_node)) { // RIGHT HERE
-			cout << "hiiiii" << endl;
-			cout.flush();
 			if ((right_node != tail) && is_marked_reference(right_node->next)) {
 				goto SEARCH_AGAIN;
 			}
