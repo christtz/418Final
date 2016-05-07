@@ -16,6 +16,9 @@ def main():
 			cmdsize = int(args[x+1])
 		elif (args[x] == '-b'): 
 			batchsize = int(args[x+1])
+		elif (args[x] == '-d'):
+			if (args[x+1] == '1'): forward = True
+			else: forward = False
 		else: 
 			pass
 	# consecutive script
@@ -27,8 +30,60 @@ def main():
 		insRandScript(cmdsize, maxnum)
 	elif (args[1] == "insconsec"):
 		insConsecScript(cmdsize)
+	elif (args[1] == "insinward"):
+		insInwardScript(cmdsize)
+	elif (args[1] == "insinterweave"):
+		insInterweave(batchsize, cmdsize, maxnum, forward)
 	else:
 		pass
+
+def insInterweave(batchsize, cmdsize, maxnum, forward):
+	print('Creating new text file')
+	name = 'ins' + repr(time.time()) + '.txt' # Name of file depends of time created
+
+	try:
+		file = open(name, 'a')
+		file.write(str(0) + "\n")
+		rangelength = (maxnum / batchsize)
+
+		for x in range(0, cmdsize):
+			if (forward): lower = (x%batchsize) * rangelength
+			else: lower = (batchsize-(x%batchsize)-1) * rangelength
+			y = randint(0, rangelength-1)
+			val = lower + y
+			file.write("ins " + str(val) + "\n")
+		file.close()
+		print('Closed file!')
+
+	except:
+		print('Error with opening file!')
+		sys.exit(0) # quit Python	
+
+def insInwardScript(cmdsize):
+	print('Creating new text file')
+	name = 'ins' + repr(time.time()) + '.txt' # Name of file depends of time created
+
+	try:
+		file = open(name, 'a')
+		file.write(str(0) + "\n")
+		leftval = 0
+		rightval = cmdsize-1
+		left = True
+		for x in range(0, cmdsize):
+			if (left): 
+				val = leftval
+				leftval += 1
+			else:
+				val = rightval
+				rightval -= 1
+			left = not left
+			file.write("ins " + str(val) + "\n")
+		file.close()
+		print('Closed file!')
+
+	except:
+		print('Error with opening file!')
+		sys.exit(0) # quit Python	
 
 def insConsecScript(cmdsize):
 	print('Creating new text file')
