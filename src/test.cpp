@@ -51,7 +51,7 @@ int main(int argc , char *argv[]){
 
 
 	//options to run
-	while((opt = getopt(argc , argv, "cotf:")) != -1){
+	while((opt = getopt(argc , argv, "c:o:t:f:")) != -1){
 	  switch (opt) {
 		  case 'f': testName = optarg;
 			    break;
@@ -88,7 +88,7 @@ int main(int argc , char *argv[]){
 	// SEQ COARS FINE
 	
 	//Run the
-	/* println("Seq");
+	println("Seq");
 	runCmdList(tr, *slist);
 	delete(slist);
 	println("Coarse");
@@ -96,9 +96,9 @@ int main(int argc , char *argv[]){
 	delete(clist);
 	println("Fine");
 	runCmdListPara(tr,*flist, numthreads);
-	delete(flist); */
+	delete(flist); 
 	println("Lock-Free");
-	runCmdList(tr,*lflist);
+	runCmdListPara(tr,*lflist, numthreads);
    	delete(lflist);
 	//Print Lists
 	/*
